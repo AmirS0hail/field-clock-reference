@@ -1,0 +1,177 @@
+:root {
+  color-scheme: light;
+  --ink: #1c1915;
+  --muted: #5c564c;
+  --line: #ddd6c8;
+  --paper: #f4f1ea;
+  --card: #fffcf7;
+  --green: #1f4d3a;
+  --green-ink: #f4f1ea;
+  --warn: #8a3d2f;
+  font-family: "Iowan Old Style", Palatino, "Palatino Linotype", Georgia, serif;
+  color: var(--ink);
+  background: var(--paper);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+.page {
+  max-width: 32rem;
+  margin: 0 auto;
+  padding: 1.5rem 1.25rem 3rem;
+}
+
+.banner {
+  margin: 0 0 0.75rem;
+  color: var(--muted);
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.85rem;
+  letter-spacing: 0.01em;
+}
+
+h1 {
+  margin: 0 0 1.25rem;
+  font-size: 1.8rem;
+  font-weight: 650;
+  line-height: 1.15;
+}
+
+.who,
+.state,
+.status {
+  margin: 0 0 0.75rem;
+}
+
+.who {
+  color: var(--muted);
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.95rem;
+}
+
+.status {
+  display: inline-block;
+  margin-bottom: 0.5rem;
+  padding: 0.2rem 0.55rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--card);
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.95rem;
+}
+
+.state {
+  font-size: 1.15rem;
+}
+
+.sign-in,
+.actions {
+  display: grid;
+  gap: 0.75rem;
+}
+
+label {
+  display: grid;
+  gap: 0.35rem;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.95rem;
+}
+
+input {
+  width: 100%;
+  min-height: 48px;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--card);
+  color: var(--ink);
+  font-size: 16px;
+}
+
+button {
+  min-height: 48px;
+  padding: 0.7rem 1rem;
+  border: 1px solid var(--green);
+  border-radius: 8px;
+  background: var(--card);
+  color: var(--green);
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-size: 1rem;
+}
+
+button.primary {
+  background: var(--green);
+  color: var(--green-ink);
+}
+
+button.text {
+  margin-top: 1.5rem;
+  border-color: transparent;
+  background: transparent;
+  color: var(--muted);
+}
+
+button:disabled {
+  opacity: 0.55;
+}
+
+button:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: 2px;
+}
+
+.notice,
+.reason {
+  margin: 0.9rem 0 0;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+}
+
+.reason {
+  color: var(--warn);
+}
+
+.events {
+  list-style: none;
+  margin: 1.25rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.events li {
+  padding: 0.85rem 0.9rem;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--card);
+}
+
+.events p {
+  margin: 0.25rem 0 0;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.95rem;
+}
+
+.event-title {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+}
+
+code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.85rem;
+}
