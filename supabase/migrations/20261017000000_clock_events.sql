@@ -26,10 +26,12 @@ create policy clock_events_select_own
   to authenticated
   using (user_id = (select auth.uid()));
 
+drop function if exists public.record_clock_event(uuid, text, timestamptz);
+
 create or replace function public.record_clock_event(
-  p_event_id uuid,
-  p_kind text,
-  p_device_time timestamptz
+  event_id uuid,
+  kind text,
+  device_time timestamptz
 )
 returns jsonb
 language plpgsql
@@ -37,10 +39,17 @@ security definer
 set search_path = public
 as $$
 declare
+  v_event_id uuid;
+  v_kind text;
+  v_device_time timestamptz;
   v_uid uuid := auth.uid();
   v_row public.clock_events;
   v_latest public.clock_events;
 begin
+  v_event_id := event_id;
+  v_kind := kind;
+  v_device_time := device_time;
+
   if v_uid is null then
     return jsonb_build_object('ok', false, 'reason', 'not_authenticated');
   end if;
@@ -53,17 +62,17 @@ begin
     into v_row
   from public.clock_events
   where user_id = v_uid
-    and event_id = p_event_id;
+    and clock_events.event_id = v_event_id;
 
   if found then
     return jsonb_build_object('ok', true, 'duplicate', true, 'row', to_jsonb(v_row));
   end if;
 
-  if p_kind is null or p_kind not in ('clock_in', 'clock_out') then
+  if v_kind is null or v_kind not in ('clock_in', 'clock_out') then
     return jsonb_build_object('ok', false, 'reason', 'invalid_kind');
   end if;
 
-  if p_device_time > clock_timestamp() + interval '5 minutes' then
+  if v_device_time > clock_timestamp() + interval '5 minutes' then
     return jsonb_build_object('ok', false, 'reason', 'device_time_in_future');
   end if;
 
@@ -74,17 +83,17 @@ begin
   order by received_at desc, id desc
   limit 1;
 
-  if p_kind = 'clock_in' and v_latest.kind = 'clock_in' then
+  if v_kind = 'clock_in' and v_latest.kind = 'clock_in' then
     return jsonb_build_object('ok', false, 'reason', 'already_clocked_in');
   end if;
 
-  if p_kind = 'clock_out' and (v_latest.id is null or v_latest.kind = 'clock_out') then
+  if v_kind = 'clock_out' and (v_latest.id is null or v_latest.kind = 'clock_out') then
     return jsonb_build_object('ok', false, 'reason', 'already_clocked_out');
   end if;
 
   begin
     insert into public.clock_events (user_id, event_id, kind, device_time, received_at)
-    values (v_uid, p_event_id, p_kind, p_device_time, clock_timestamp())
+    values (v_uid, v_event_id, v_kind, v_device_time, clock_timestamp())
     returning * into v_row;
   exception
     when unique_violation then
@@ -92,7 +101,7 @@ begin
         into v_row
       from public.clock_events
       where user_id = v_uid
-        and event_id = p_event_id;
+        and clock_events.event_id = v_event_id;
 
       return jsonb_build_object('ok', true, 'duplicate', true, 'row', to_jsonb(v_row));
   end;
