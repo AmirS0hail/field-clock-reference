@@ -29,9 +29,9 @@ input {
 }
 
 .page {
-  max-width: 32rem;
+  max-width: 28rem;
   margin: 0 auto;
-  padding: 1.5rem 1.25rem 3rem;
+  padding: 1.25rem 1rem 2.5rem;
 }
 
 .banner {
@@ -43,43 +43,90 @@ input {
 }
 
 h1 {
-  margin: 0 0 1.25rem;
+  margin: 0 0 1rem;
   font-size: 1.8rem;
   font-weight: 650;
   line-height: 1.15;
 }
 
+.panel {
+  margin-top: 0.25rem;
+  padding: 1rem;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--card);
+}
+
 .who,
 .state,
 .status {
-  margin: 0 0 0.75rem;
+  margin: 0;
 }
 
 .who {
+  margin-bottom: 0.65rem;
   color: var(--muted);
   font-family: ui-sans-serif, system-ui, sans-serif;
-  font-size: 0.95rem;
+  font-size: 0.85rem;
 }
 
 .status {
-  display: inline-block;
-  margin-bottom: 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 0.35rem;
   padding: 0.2rem 0.55rem;
   border: 1px solid var(--line);
   border-radius: 999px;
   background: var(--card);
   font-family: ui-sans-serif, system-ui, sans-serif;
   font-size: 0.95rem;
+  line-height: 1.3;
+  transition:
+    color 150ms ease,
+    border-color 150ms ease;
+}
+
+.status.calm {
+  color: var(--green);
+  border-color: var(--green);
+}
+
+.status.offline,
+.status.waiting {
+  color: var(--warn);
+  border-color: var(--warn);
+}
+
+.status.waiting {
+  font-weight: 650;
+}
+
+.status-dot {
+  display: block;
+  flex: none;
 }
 
 .state {
-  font-size: 1.15rem;
+  margin-bottom: 0.9rem;
+  color: var(--ink);
+  font-size: 1.35rem;
+  font-weight: 650;
+  line-height: 1.2;
+}
+
+.state.clocked-in {
+  color: var(--green);
 }
 
 .sign-in,
 .actions {
   display: grid;
   gap: 0.75rem;
+}
+
+.actions {
+  gap: 0.6rem;
 }
 
 label {
@@ -95,7 +142,7 @@ input {
   padding: 0.6rem 0.75rem;
   border: 1px solid var(--line);
   border-radius: 8px;
-  background: var(--card);
+  background: var(--paper);
   color: var(--ink);
   font-size: 16px;
 }
@@ -109,6 +156,13 @@ button {
   color: var(--green);
   font-family: ui-sans-serif, system-ui, sans-serif;
   font-size: 1rem;
+  cursor: pointer;
+}
+
+.actions button,
+.sign-in button,
+button.proof {
+  width: 100%;
 }
 
 button.primary {
@@ -116,15 +170,36 @@ button.primary {
   color: var(--green-ink);
 }
 
-button.text {
-  margin-top: 1.5rem;
-  border-color: transparent;
+button.secondary {
+  background: var(--card);
+  color: var(--green);
+  border-color: var(--green);
+}
+
+button.proof {
+  margin-top: 0.75rem;
+  border-color: var(--line);
   background: transparent;
-  color: var(--muted);
+  color: var(--ink);
+  font-size: 0.95rem;
+}
+
+.sign-out {
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--line);
+}
+
+.sign-out button {
+  width: 100%;
+  border-color: var(--ink);
+  background: var(--card);
+  color: var(--ink);
 }
 
 button:disabled {
   opacity: 0.55;
+  cursor: not-allowed;
 }
 
 button:focus-visible,
@@ -133,19 +208,25 @@ input:focus-visible {
   outline-offset: 2px;
 }
 
-.notice,
-.reason {
-  margin: 0.9rem 0 0;
+.notice {
+  margin: 0.75rem 0 0;
+  padding: 0.7rem 0.8rem;
+  border: 1px solid var(--green);
+  border-radius: 8px;
+  background: var(--card);
+  color: var(--green);
   font-family: ui-sans-serif, system-ui, sans-serif;
 }
 
 .reason {
+  margin: 0.9rem 0 0;
   color: var(--warn);
+  font-family: ui-sans-serif, system-ui, sans-serif;
 }
 
 .events {
   list-style: none;
-  margin: 1.25rem 0 0;
+  margin: 1rem 0 0;
   padding: 0;
   display: grid;
   gap: 0.75rem;
@@ -155,7 +236,24 @@ input:focus-visible {
   padding: 0.85rem 0.9rem;
   border: 1px solid var(--line);
   border-radius: 10px;
-  background: var(--card);
+  background: var(--paper);
+}
+
+.events li.pending,
+.events li.rejected {
+  border-color: var(--warn);
+  box-shadow: inset 3px 0 0 var(--warn);
+}
+
+.events li.saved {
+  box-shadow: inset 3px 0 0 var(--green);
+}
+
+.events li.empty {
+  color: var(--muted);
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.95rem;
+  box-shadow: none;
 }
 
 .events p {
@@ -164,14 +262,54 @@ input:focus-visible {
   font-size: 0.95rem;
 }
 
+.events button {
+  margin-top: 0.65rem;
+}
+
 .event-title {
   display: flex;
   justify-content: space-between;
+  align-items: baseline;
   gap: 1rem;
   font-family: ui-sans-serif, system-ui, sans-serif;
 }
 
+.event-times {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  margin-top: 0.45rem;
+}
+
+.event-times p {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  margin: 0;
+  min-width: 0;
+  font-size: 0.95rem;
+  line-height: 1.3;
+}
+
+.time-label {
+  color: var(--muted);
+  font-size: 0.75rem;
+  line-height: 1.2;
+}
+
+.event-times time,
+.event-times [data-testid='received-at'] {
+  white-space: nowrap;
+}
+
 code {
+  color: var(--muted);
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 0.85rem;
+  font-size: 0.75rem;
+}
+
+@media (min-width: 48rem) {
+  .page {
+    max-width: 40rem;
+  }
 }

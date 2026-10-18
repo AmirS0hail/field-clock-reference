@@ -36,7 +36,6 @@ export default function App() {
 
   return (
     <main className="page">
-      <p className="banner">Reference build. Demo data. Not a client app.</p>
       <h1>Field clock reference</h1>
       {!supabase ? (
         <p className="reason">
@@ -72,7 +71,7 @@ function SignIn() {
   }
 
   return (
-    <form className="sign-in" onSubmit={(event) => void onSubmit(event)}>
+    <form className="sign-in panel" onSubmit={(event) => void onSubmit(event)}>
       <label>
         Email
         <input name="email" type="email" autoComplete="username" required />
